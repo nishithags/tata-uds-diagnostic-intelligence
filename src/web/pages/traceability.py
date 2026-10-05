@@ -138,7 +138,10 @@ def render_traceability_page(active_ws):
             )
 
             with st.expander("📄 Raw Node Attributes & Metadata"):
-                st.json(target_node.attributes)
+                if target_node.metadata:
+                    st.json(target_node.metadata)
+                else:
+                    st.info("No custom metadata attributes recorded for this artifact.")
 
             with st.expander("🔍 Complete Lineage JSON Payload"):
                 st.json(lineage_result.model_dump())

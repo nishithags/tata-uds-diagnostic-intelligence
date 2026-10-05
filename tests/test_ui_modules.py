@@ -44,3 +44,38 @@ def test_global_header_rendering():
     ws = workspace_manager.get_workspace("tata_uds_pilot")
     render_global_header(ws)
     render_global_header(None)
+
+
+def test_traceability_page_rendering_and_graph_node_metadata():
+    """
+    Regression test for Traceability page GraphNode rendering defect.
+    Verifies render_traceability_page executes without AttributeError on GraphNode,
+    and validates both populated and empty metadata conditions.
+    """
+    from src.core.graph_store import GraphNode
+
+    # 1. Verify GraphNode model attributes and empty/populated metadata access
+    node_with_meta = GraphNode(
+        node_id="test_node_01",
+        node_type="RULE",
+        label="Rule 0x27",
+        project_id="tata_uds_pilot",
+        metadata={"spec": "ISO 14229-1", "level": 1}
+    )
+    assert hasattr(node_with_meta, "metadata")
+    assert node_with_meta.metadata.get("spec") == "ISO 14229-1"
+
+    node_empty_meta = GraphNode(
+        node_id="test_node_02",
+        node_type="TEST_CASE",
+        label="TC 0x10",
+        project_id="tata_uds_pilot",
+        metadata={}
+    )
+    assert hasattr(node_empty_meta, "metadata")
+    assert not node_empty_meta.metadata
+
+    # 2. Verify render_traceability_page executes cleanly on active workspace
+    ws = workspace_manager.get_workspace("tata_uds_pilot")
+    render_traceability_page(ws)
+
