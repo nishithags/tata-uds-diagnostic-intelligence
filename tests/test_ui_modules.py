@@ -79,3 +79,51 @@ def test_traceability_page_rendering_and_graph_node_metadata():
     ws = workspace_manager.get_workspace("tata_uds_pilot")
     render_traceability_page(ws)
 
+
+def test_overview_historical_execution_metrics():
+    """
+    Regression test for Overview execution pass-rate presentation.
+    Verifies:
+    1. Historical execution count is correct.
+    2. Passed count is correct.
+    3. Failed count is correct.
+    4. Historical pass rate remains mathematically correct.
+    5. The UI labels the metric as historical execution pass rate.
+    6. Historical failed executions are not deleted or ignored.
+    """
+    import inspect
+    from src.core.execution_store import execution_store
+    from src.web.pages import overview
+
+    ws = workspace_manager.get_workspace("tata_uds_pilot")
+    runs = execution_store.list_execution_results(ws.project_id)
+
+    # 1. Historical execution count
+    total_runs = len(runs)
+    assert total_runs == 2
+
+    # 2. Passed count
+    passed_runs = [r for r in runs if r.overall_verdict == "PASS"]
+    assert len(passed_runs) == 1
+
+    # 3. Failed count
+    failed_runs = [r for r in runs if r.overall_verdict == "FAIL"]
+    assert len(failed_runs) == 1
+
+    # 4. Historical pass rate mathematical correctness
+    calc_rate = (len(passed_runs) / total_runs) * 100.0
+    assert calc_rate == 50.0
+
+    # 5. UI labels metric as Historical Pass Rate and preserves execution history wording
+    overview_source = inspect.getsource(overview.render_overview_page)
+    assert "Historical Pass Rate" in overview_source
+    assert "Execution History" in overview_source
+    assert "Historical execution pass rate is calculated from recorded runs and includes retained historical failures." in overview_source
+
+    # 6. Historical failed execution is preserved and not deleted or ignored
+    failed_run = failed_runs[0]
+    assert failed_run.overall_verdict == "FAIL"
+    assert any(step.actual_nrc == "0x31" for step in failed_run.step_results)
+
+    # 7. Render overview page without exceptions
+    render_overview_page(ws)

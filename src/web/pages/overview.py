@@ -20,7 +20,11 @@ def render_overview_page(active_ws):
     past_runs = execution_store.list_execution_results(active_ws.project_id)
 
     passed_runs = [r for r in past_runs if r.overall_verdict == "PASS"]
-    pass_rate_str = f"{(len(passed_runs) / len(past_runs) * 100):.1f}%" if past_runs else "N/A"
+    failed_runs = [r for r in past_runs if r.overall_verdict == "FAIL"]
+    total_runs_count = len(past_runs)
+    passed_count = len(passed_runs)
+    failed_count = len(failed_runs)
+    pass_rate_str = f"{(passed_count / total_runs_count * 100):.1f}%" if total_runs_count > 0 else "N/A"
 
     total_docs = len(active_ws.documents)
     total_chunks = vstore.count_chunks(active_ws.project_id)
@@ -100,8 +104,8 @@ def render_overview_page(active_ws):
             f"""
             <div class="kpi-metric-box">
                 <div class="kpi-metric-label">Executed Tests</div>
-                <div class="kpi-metric-val">{len(past_runs)}</div>
-                <div class="kpi-metric-sub">Simulated ECU Runs</div>
+                <div class="kpi-metric-val">{total_runs_count}</div>
+                <div class="kpi-metric-sub">{passed_count} Passed • {failed_count} Failed</div>
             </div>
             """,
             unsafe_allow_html=True
@@ -111,13 +115,32 @@ def render_overview_page(active_ws):
         st.markdown(
             f"""
             <div class="kpi-metric-box">
-                <div class="kpi-metric-label">Pass Rate</div>
+                <div class="kpi-metric-label">Historical Pass Rate</div>
                 <div class="kpi-metric-val">{pass_rate_str}</div>
-                <div class="kpi-metric-sub">First-Pass Verdict</div>
+                <div class="kpi-metric-sub">Based on {total_runs_count} recorded runs</div>
             </div>
             """,
             unsafe_allow_html=True
         )
+
+    # Execution History context & breakdown bar
+    st.markdown(
+        f"""
+        <div style="background:#111B2E; border:1px solid #1E293B; border-radius:6px; padding:0.65rem 1rem; margin-top:0.6rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem;">
+            <div style="display:flex; align-items:center; gap:1.25rem; font-size:0.78rem;">
+                <span style="font-weight:700; color:#38BDF8; letter-spacing:0.06em; text-transform:uppercase;">Execution History:</span>
+                <span style="color:#94A3B8;">Total Runs: <b style="color:#F8FAFC;">{total_runs_count}</b></span>
+                <span style="color:#94A3B8;">Passed: <b style="color:#4ADE80;">{passed_count}</b></span>
+                <span style="color:#94A3B8;">Failed: <b style="color:#F87171;">{failed_count}</b></span>
+                <span style="color:#94A3B8;">Historical Pass Rate: <b style="color:#38BDF8;">{pass_rate_str}</b></span>
+            </div>
+            <div style="font-size:0.73rem; color:#64748B;">
+                Historical execution pass rate is calculated from recorded runs and includes retained historical failures.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Section C: System Health
     st.markdown("<div class='section-heading' style='margin-top:1.2rem;'>System Health & Runtime Status</div>", unsafe_allow_html=True)
