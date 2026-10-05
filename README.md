@@ -129,7 +129,7 @@ Tata Technologies project/
 │       │   ├── test_studio.py       # Deterministic generator and frame validator
 │       │   └── traceability.py      # Relational graph lineage visualizer
 │       └── styles/theme.py          # Custom automotive engineering CSS design system
-├── tests/                           # Complete test suite (183 tests)
+├── tests/                           # Complete test suite (185 tests)
 └── data/                            # Project data directory
     ├── sample_specs/                # Synthetic reference specifications
     ├── test_cases/                  # Seed test cases for default workspace
@@ -217,7 +217,7 @@ docker compose down
 
 ## 7. Automated Test Suite
 
-The repository contains 183 automated unit, integration, and API tests covering all five project phases.
+The repository contains 185 automated unit, integration, and API tests covering all five project phases.
 
 ```bash
 python -m pytest tests/ -v
@@ -225,7 +225,7 @@ python -m pytest tests/ -v
 
 **Expected Result:**
 ```text
-======================= 183 passed in 17.0s =======================
+======================= 185 passed in 17.0s =======================
 ```
 
 Key test coverage areas:
