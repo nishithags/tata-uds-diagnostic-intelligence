@@ -1,0 +1,58 @@
+================================================================================
+ISO 14229-1 DIAGNOSTIC SPECIFICATION (SYNTHETIC BENCHMARK SPECIFICATION)
+Document: UDS-SPEC-ISO14229-PILOT | Version: 2026.1 | Classification: Public Pilot
+================================================================================
+
+1. Diagnostic Session Control (Service 0x10)
+The DiagnosticSessionControl service is used to enable different diagnostic sessions in the server.
+
+1.1 Supported Subfunctions:
+- 0x01: defaultSession (Standard diagnostic session active upon ECU boot).
+- 0x02: programmingSession (Used for memory programming and software flashing).
+- 0x03: extendedDiagnosticSession (Enables advanced diagnostics, I/O control, and security access).
+- 0x04: safetySystemDiagnosticSession (Used for critical safety actuator diagnostics).
+
+1.2 Timing Requirements:
+- P2Server_max: 50 milliseconds.
+- P2*Server_max: 5000 milliseconds (when NRC 0x78 ResponsePending is returned).
+- S3Server: 5000 milliseconds (session keep-alive timer; refreshed by Service 0x3E TesterPresent).
+
+1.3 Negative Response Codes:
+- NRC 0x12: SubFunctionNotSupported
+- NRC 0x13: IncorrectMessageLengthOrInvalidFormat
+- NRC 0x22: ConditionsNotCorrect
+
+--------------------------------------------------------------------------------
+
+2. Security Access (Service 0x27)
+The SecurityAccess service provides a means to access secured diagnostic services and data.
+
+2.1 Seed-Key Authentication Sequence:
+Step 1: The diagnostic tester requests a seed using subfunction 0x01 (RequestSeed):
+        Request format: 0x27 0x01.
+        Positive response: 0x67 0x01 <4-byte Seed>.
+Step 2: The client calculates the response key and transmits subfunction 0x02 (SendKey):
+        Request format: 0x27 0x02 <4-byte Key>.
+        Positive response: 0x67 0x02.
+
+2.2 Security Lockout and Negative Responses:
+- NRC 0x24: RequestSequenceError (SendKey sent without prior RequestSeed).
+- NRC 0x35: InvalidKey (Transmitted key does not match expected algorithm).
+- NRC 0x36: ExceededNumberOfAttempts (Triggered after 3 consecutive invalid keys).
+- NRC 0x37: RequiredTimeDelayNotExpired (10-second anti-hammering lockout enforced).
+
+--------------------------------------------------------------------------------
+
+3. Read Data By Identifier (Service 0x22)
+The ReadDataByIdentifier service allows the client to request data record values from the server.
+
+3.1 Supported Data Identifiers (DIDs):
+- DID 0xF186: ActiveDiagnosticSessionDataIdentifier (1 byte).
+- DID 0xF189: EcuSoftwareNumberDataIdentifier (4 bytes ASCII).
+- DID 0xF190: VehicleIdentificationNumberDataIdentifier (17 bytes ASCII).
+- DID 0x2001: CalibrationOffsetAngle (2 bytes signed big-endian, extended session).
+
+3.2 Preconditions & Negative Responses:
+- Read access for DID 0x2001 requires Extended Diagnostic Session (0x03).
+- If DID is not supported, server returns NRC 0x31 (RequestOutOfRange).
+- If session conditions are not met, server returns NRC 0x22 (ConditionsNotCorrect).

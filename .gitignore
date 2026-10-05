@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / coverage cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Databases & Vector Stores
+*.db
+*.sqlite
+*.sqlite3
+data/activity/
+data/chromadb/
+data/traceability/*.db
+
+# Runtime logs & dynamic journals
+*.log
+data/audit_logs/*.jsonl
+
+# Uploaded documents runtime storage (preserve directory via .gitkeep)
+data/uploaded_documents/*
+!data/uploaded_documents/.gitkeep
+
+# Transient test workspace artifacts (ephemeral Pytest runs)
+data/test_cases/tc_test_*.json
+data/execution_runs/runs_test_*.json
+data/execution_runs/runs_proj_defect_telemetry.json
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,366 @@
+{
+  "TC_UDS_0x22_POS_B78F67": {
+    "test_case_id": "TC_UDS_0x22_POS_B78F67",
+    "project_id": "tata_uds_pilot",
+    "service_id": 34,
+    "service_name": "ReadDataByIdentifier",
+    "test_type": "POSITIVE",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "description": "Verify ECU positive response (0x62) for valid ReadDataByIdentifier request.",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "steps": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 0201",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "timeout_ms": 2000,
+        "suppress_pos_rsp": false
+      }
+    ],
+    "pass_fail_criteria": "ECU must respond with positive response SID 0x62 within timeout threshold.",
+    "rule_verification_status": "PASSED",
+    "rule_verification_report": {
+      "overall_verdict": "PASS",
+      "service_id": 34,
+      "service_hex": "0x22",
+      "service_name": "ReadDataByIdentifier",
+      "checks": [
+        {
+          "rule_code": "RULE_SID_SUPPORT",
+          "rule_name": "ISO 14229 Service ID Support",
+          "passed": true,
+          "message": "Service ReadDataByIdentifier (0x22) recognized.",
+          "expected": "Valid ISO 14229 SID",
+          "actual": "0x22"
+        },
+        {
+          "rule_code": "RULE_LENGTH_CHECK",
+          "rule_name": "Message Length Specification",
+          "passed": true,
+          "message": "Length 3 bytes satisfies minimum 3.",
+          "expected": "[3..unlimited] bytes",
+          "actual": "3 bytes"
+        },
+        {
+          "rule_code": "RULE_DID_ALIGNMENT",
+          "rule_name": "DID 2-Byte Alignment",
+          "passed": true,
+          "message": "Request contains 1 well-formed 2-byte DID(s): 0x0201.",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "rule_code": "RULE_SESSION_PREREQUISITE",
+          "rule_name": "Active Diagnostic Session Check",
+          "passed": true,
+          "message": "Session 'DEFAULT' is allowed for ReadDataByIdentifier.",
+          "expected": "One of: EXTENDED, DEFAULT, PROGRAMMING",
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SECURITY_PREREQUISITE",
+          "rule_name": "Security Access Level Check",
+          "passed": true,
+          "message": "Current security level 0 satisfies minimum required 0.",
+          "expected": "Security Level >= 0",
+          "actual": "Security Level 0"
+        }
+      ],
+      "errors": [],
+      "warnings": []
+    },
+    "review_status": "PENDING_REVIEW",
+    "citation_references": [],
+    "generation_source": "DETERMINISTIC_RULE_TEMPLATE",
+    "generation_model": "rule-template-v1",
+    "created_at": "2026-09-30T17:05:49.846818+00:00",
+    "updated_at": "2026-09-30T17:05:49.846818+00:00"
+  },
+  "TC_UDS_0x22_POS_48EBF5": {
+    "test_case_id": "TC_UDS_0x22_POS_48EBF5",
+    "project_id": "tata_uds_pilot",
+    "service_id": 34,
+    "service_name": "ReadDataByIdentifier",
+    "test_type": "POSITIVE",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "description": "Verify ECU positive response (0x62) for valid ReadDataByIdentifier request.",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "steps": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 0201",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "timeout_ms": 2000,
+        "suppress_pos_rsp": false
+      }
+    ],
+    "pass_fail_criteria": "ECU must respond with positive response SID 0x62 within timeout threshold.",
+    "rule_verification_status": "PASSED",
+    "rule_verification_report": {
+      "overall_verdict": "PASS",
+      "service_id": 34,
+      "service_hex": "0x22",
+      "service_name": "ReadDataByIdentifier",
+      "checks": [
+        {
+          "rule_code": "RULE_SID_SUPPORT",
+          "rule_name": "ISO 14229 Service ID Support",
+          "passed": true,
+          "message": "Service ReadDataByIdentifier (0x22) recognized.",
+          "expected": "Valid ISO 14229 SID",
+          "actual": "0x22"
+        },
+        {
+          "rule_code": "RULE_LENGTH_CHECK",
+          "rule_name": "Message Length Specification",
+          "passed": true,
+          "message": "Length 3 bytes satisfies minimum 3.",
+          "expected": "[3..unlimited] bytes",
+          "actual": "3 bytes"
+        },
+        {
+          "rule_code": "RULE_DID_ALIGNMENT",
+          "rule_name": "DID 2-Byte Alignment",
+          "passed": true,
+          "message": "Request contains 1 well-formed 2-byte DID(s): 0x0201.",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "rule_code": "RULE_SESSION_PREREQUISITE",
+          "rule_name": "Active Diagnostic Session Check",
+          "passed": true,
+          "message": "Session 'DEFAULT' is allowed for ReadDataByIdentifier.",
+          "expected": "One of: EXTENDED, DEFAULT, PROGRAMMING",
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SECURITY_PREREQUISITE",
+          "rule_name": "Security Access Level Check",
+          "passed": true,
+          "message": "Current security level 0 satisfies minimum required 0.",
+          "expected": "Security Level >= 0",
+          "actual": "Security Level 0"
+        }
+      ],
+      "errors": [],
+      "warnings": []
+    },
+    "review_status": "APPROVED",
+    "citation_references": [],
+    "generation_source": "DETERMINISTIC_RULE_TEMPLATE",
+    "generation_model": "rule-template-v1",
+    "created_at": "2026-09-30T17:28:53.933351+00:00",
+    "updated_at": "2026-09-30T17:40:26.904663+00:00"
+  },
+  "TC_UDS_0x22_POS_51202B": {
+    "test_case_id": "TC_UDS_0x22_POS_51202B",
+    "project_id": "tata_uds_pilot",
+    "service_id": 34,
+    "service_name": "ReadDataByIdentifier",
+    "test_type": "POSITIVE",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "description": "Verify ECU positive response (0x62) for valid ReadDataByIdentifier request.",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "steps": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 F190",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "timeout_ms": 2000,
+        "suppress_pos_rsp": false
+      }
+    ],
+    "pass_fail_criteria": "ECU must respond with positive response SID 0x62 within timeout threshold.",
+    "rule_verification_status": "PASSED",
+    "rule_verification_report": {
+      "overall_verdict": "PASS",
+      "service_id": 34,
+      "service_hex": "0x22",
+      "service_name": "ReadDataByIdentifier",
+      "checks": [
+        {
+          "rule_code": "RULE_SID_SUPPORT",
+          "rule_name": "ISO 14229 Service ID Support",
+          "passed": true,
+          "message": "Service ReadDataByIdentifier (0x22) recognized.",
+          "expected": "Valid ISO 14229 SID",
+          "actual": "0x22"
+        },
+        {
+          "rule_code": "RULE_LENGTH_CHECK",
+          "rule_name": "Message Length Specification",
+          "passed": true,
+          "message": "Length 3 bytes satisfies minimum 3.",
+          "expected": "[3..unlimited] bytes",
+          "actual": "3 bytes"
+        },
+        {
+          "rule_code": "RULE_DID_ALIGNMENT",
+          "rule_name": "DID 2-Byte Alignment",
+          "passed": true,
+          "message": "Request contains 1 well-formed 2-byte DID(s): 0xF190.",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "rule_code": "RULE_DID_SUPPORT",
+          "rule_name": "Specification DID Support",
+          "passed": true,
+          "message": "DID 0xF190 (VehicleIdentificationNumberDataIdentifier) is authorized by specification.",
+          "expected": "One of: 0x2001, 0xF186, 0xF189, 0xF190",
+          "actual": "0xF190"
+        },
+        {
+          "rule_code": "RULE_DID_SESSION_PREREQUISITE",
+          "rule_name": "DID Session Prerequisite",
+          "passed": true,
+          "message": "Diagnostic session 'DEFAULT' satisfies requirement for DID 0xF190.",
+          "expected": null,
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SESSION_PREREQUISITE",
+          "rule_name": "Active Diagnostic Session Check",
+          "passed": true,
+          "message": "Session 'DEFAULT' is allowed for ReadDataByIdentifier.",
+          "expected": "One of: EXTENDED, PROGRAMMING, DEFAULT",
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SECURITY_PREREQUISITE",
+          "rule_name": "Security Access Level Check",
+          "passed": true,
+          "message": "Current security level 0 satisfies minimum required 0.",
+          "expected": "Security Level >= 0",
+          "actual": "Security Level 0"
+        }
+      ],
+      "errors": [],
+      "warnings": []
+    },
+    "review_status": "PENDING_REVIEW",
+    "citation_references": [],
+    "generation_source": "DETERMINISTIC_RULE_TEMPLATE",
+    "generation_model": "rule-template-v1",
+    "created_at": "2026-10-01T05:20:37.753682+00:00",
+    "updated_at": "2026-10-01T05:20:37.753682+00:00"
+  },
+  "TC_UDS_0x22_POS_ADD890": {
+    "test_case_id": "TC_UDS_0x22_POS_ADD890",
+    "project_id": "tata_uds_pilot",
+    "service_id": 34,
+    "service_name": "ReadDataByIdentifier",
+    "test_type": "POSITIVE",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "description": "Verify ECU positive response (0x62) for valid ReadDataByIdentifier request.",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "steps": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 F190",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "timeout_ms": 2000,
+        "suppress_pos_rsp": false
+      }
+    ],
+    "pass_fail_criteria": "ECU must respond with positive response SID 0x62 within timeout threshold.",
+    "rule_verification_status": "PASSED",
+    "rule_verification_report": {
+      "overall_verdict": "PASS",
+      "service_id": 34,
+      "service_hex": "0x22",
+      "service_name": "ReadDataByIdentifier",
+      "checks": [
+        {
+          "rule_code": "RULE_SID_SUPPORT",
+          "rule_name": "ISO 14229 Service ID Support",
+          "passed": true,
+          "message": "Service ReadDataByIdentifier (0x22) recognized.",
+          "expected": "Valid ISO 14229 SID",
+          "actual": "0x22"
+        },
+        {
+          "rule_code": "RULE_LENGTH_CHECK",
+          "rule_name": "Message Length Specification",
+          "passed": true,
+          "message": "Length 3 bytes satisfies minimum 3.",
+          "expected": "[3..unlimited] bytes",
+          "actual": "3 bytes"
+        },
+        {
+          "rule_code": "RULE_DID_ALIGNMENT",
+          "rule_name": "DID 2-Byte Alignment",
+          "passed": true,
+          "message": "Request contains 1 well-formed 2-byte DID(s): 0xF190.",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "rule_code": "RULE_DID_SUPPORT",
+          "rule_name": "Specification DID Support",
+          "passed": true,
+          "message": "DID 0xF190 (VehicleIdentificationNumberDataIdentifier) is authorized by specification.",
+          "expected": "One of: 0x2001, 0xF186, 0xF189, 0xF190",
+          "actual": "0xF190"
+        },
+        {
+          "rule_code": "RULE_DID_SESSION_PREREQUISITE",
+          "rule_name": "DID Session Prerequisite",
+          "passed": true,
+          "message": "Diagnostic session 'DEFAULT' satisfies requirement for DID 0xF190.",
+          "expected": null,
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SESSION_PREREQUISITE",
+          "rule_name": "Active Diagnostic Session Check",
+          "passed": true,
+          "message": "Session 'DEFAULT' is allowed for ReadDataByIdentifier.",
+          "expected": "One of: EXTENDED, PROGRAMMING, DEFAULT",
+          "actual": "DEFAULT"
+        },
+        {
+          "rule_code": "RULE_SECURITY_PREREQUISITE",
+          "rule_name": "Security Access Level Check",
+          "passed": true,
+          "message": "Current security level 0 satisfies minimum required 0.",
+          "expected": "Security Level >= 0",
+          "actual": "Security Level 0"
+        }
+      ],
+      "errors": [],
+      "warnings": []
+    },
+    "review_status": "APPROVED",
+    "citation_references": [],
+    "generation_source": "DETERMINISTIC_RULE_TEMPLATE",
+    "generation_model": "rule-template-v1",
+    "created_at": "2026-10-01T05:21:19.592395+00:00",
+    "updated_at": "2026-10-01T05:24:47.451918+00:00"
+  }
+}

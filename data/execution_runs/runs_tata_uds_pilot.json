@@ -1,0 +1,122 @@
+{
+  "exec_TC_UDS_0x22_POS_48EBF5_20260930174901963856": {
+    "execution_id": "exec_TC_UDS_0x22_POS_48EBF5_20260930174901963856",
+    "test_case_id": "TC_UDS_0x22_POS_48EBF5",
+    "project_id": "tata_uds_pilot",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "test_type": "POSITIVE",
+    "overall_verdict": "FAIL",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "initial_ecu_state": {
+      "session": "DEFAULT",
+      "security_level": 0,
+      "security_locked": true,
+      "seed_pending": false,
+      "failed_security_attempts": 0,
+      "dtc_count": 3,
+      "s3_timer_active": false,
+      "supported_services_count": 15
+    },
+    "final_ecu_state": {
+      "session": "DEFAULT",
+      "security_level": 0,
+      "security_locked": true,
+      "seed_pending": false,
+      "failed_security_attempts": 0,
+      "dtc_count": 3,
+      "s3_timer_active": false,
+      "supported_services_count": 15
+    },
+    "total_elapsed_ms": 0.0,
+    "steps_total": 1,
+    "steps_passed": 0,
+    "step_results": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 0201",
+        "actual_response_hex": "7F 22 31",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "actual_nrc": "0x31",
+        "elapsed_ms": 5.0,
+        "timeout_ms": 2000,
+        "timing_verdict": "PASS",
+        "step_verdict": "FAIL",
+        "error_message": "Expected positive response (0x62), received NRC 0x31.",
+        "trace_logs": [
+          "Received Request: SID 0x22 | Length: 3 bytes | Hex: 22 02 01",
+          "DID 0x0201 not found in memory map -> NRC 0x31 (RequestOutOfRange)."
+        ]
+      }
+    ],
+    "governance_verified": true,
+    "adapter_used": "SimulatedECUAdapter",
+    "executed_at": "2026-09-30T17:49:01.966881+00:00",
+    "audit_id": "aud_20260930174901963856"
+  },
+  "exec_TC_UDS_0x22_POS_ADD890_20261001052927690216": {
+    "execution_id": "exec_TC_UDS_0x22_POS_ADD890_20261001052927690216",
+    "test_case_id": "TC_UDS_0x22_POS_ADD890",
+    "project_id": "tata_uds_pilot",
+    "title": "Positive Test for ReadDataByIdentifier (0x22)",
+    "test_type": "POSITIVE",
+    "overall_verdict": "PASS",
+    "preconditions": {
+      "session": "DEFAULT",
+      "security": 0
+    },
+    "initial_ecu_state": {
+      "session": "DEFAULT",
+      "security_level": 0,
+      "security_locked": true,
+      "seed_pending": false,
+      "failed_security_attempts": 0,
+      "dtc_count": 3,
+      "s3_timer_active": false,
+      "supported_services_count": 15
+    },
+    "final_ecu_state": {
+      "session": "DEFAULT",
+      "security_level": 0,
+      "security_locked": true,
+      "seed_pending": false,
+      "failed_security_attempts": 0,
+      "dtc_count": 3,
+      "s3_timer_active": false,
+      "supported_services_count": 15
+    },
+    "total_elapsed_ms": 0.0,
+    "steps_total": 1,
+    "steps_passed": 1,
+    "step_results": [
+      {
+        "step_number": 1,
+        "description": "Send positive request for ReadDataByIdentifier (0x22)",
+        "request_hex": "22 F190",
+        "actual_response_hex": "62 F1 90 31 54 41 54 41 45 4E 47 31 32 33 34 35 36 37 38 39",
+        "expected_response_type": "POSITIVE",
+        "expected_response_hex": "62 ...",
+        "expected_nrc": null,
+        "actual_nrc": null,
+        "elapsed_ms": 5.0,
+        "timeout_ms": 2000,
+        "timing_verdict": "PASS",
+        "step_verdict": "PASS",
+        "error_message": null,
+        "trace_logs": [
+          "Received Request: SID 0x22 | Length: 3 bytes | Hex: 22 F1 90",
+          "Read 1 DID(s) successfully: F190."
+        ]
+      }
+    ],
+    "governance_verified": true,
+    "adapter_used": "SimulatedECUAdapter",
+    "executed_at": "2026-10-01T05:29:27.693790+00:00",
+    "audit_id": "aud_20261001052927690216"
+  }
+}

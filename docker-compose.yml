@@ -1,0 +1,59 @@
+services:
+  uds-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uds-api
+    command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      - UDS_API_HOST=0.0.0.0
+      - UDS_API_PORT=8000
+      - UDS_ADMIN_KEY=${UDS_ADMIN_KEY:-}
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - uds-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  uds-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uds-web
+    command: ["streamlit", "run", "src/web/app.py", "--server.port", "8501", "--server.address", "0.0.0.0", "--server.headless", "true"]
+    ports:
+      - "8501:8501"
+    environment:
+      - UDS_API_URL=http://uds-api:8000
+      - UDS_STREAMLIT_PORT=8501
+      - UDS_ADMIN_KEY=${UDS_ADMIN_KEY:-}
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - uds-data:/app/data
+    depends_on:
+      uds-api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  uds-data:
+    driver: local

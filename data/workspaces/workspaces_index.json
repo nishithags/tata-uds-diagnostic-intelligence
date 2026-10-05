@@ -1,0 +1,103 @@
+{
+  "tata_uds_pilot": {
+    "project_id": "tata_uds_pilot",
+    "name": "Tata Technologies UDS Diagnostic Pilot",
+    "description": "Default engineering workspace for ISO 14229 UDS diagnostic verification",
+    "oem_name": "Tata Technologies Reference OEM",
+    "ecu_model": "Powertrain & Body Diagnostic Controller",
+    "created_at": "2026-09-30T13:32:18.669533+00:00",
+    "documents": {
+      "doc_8d9660e8c1795039": {
+        "doc_id": "doc_8d9660e8c1795039",
+        "project_id": "tata_uds_pilot",
+        "filename": "synthetic_uds_spec.txt",
+        "file_type": "TEXT/MD",
+        "file_size_bytes": 2999,
+        "file_hash_sha256": "8d9660e8c1795039c78b55c68a59a68d828c6b24c821b647bbe380036c67c031",
+        "total_pages": 1,
+        "total_chunks": 6,
+        "ingested_at": "2026-09-30T13:43:59.028492+00:00",
+        "authorization_status": "AUTHORIZED_FOR_PILOT"
+      }
+    }
+  },
+  "test_api_ws_01": {
+    "project_id": "test_api_ws_01",
+    "name": "API Test Workspace",
+    "description": "Integration testing workspace",
+    "oem_name": "Tata Test OEM",
+    "ecu_model": "BCM_TEST",
+    "created_at": "2026-10-05T02:14:49.143155+00:00",
+    "documents": {}
+  },
+  "test_upload_ws_02": {
+    "project_id": "test_upload_ws_02",
+    "name": "Upload Flow Test",
+    "description": "",
+    "oem_name": "OEM Test",
+    "ecu_model": "ECU_01",
+    "created_at": "2026-10-05T02:14:49.257977+00:00",
+    "documents": {
+      "doc_eb8262dc58cda08e": {
+        "doc_id": "doc_eb8262dc58cda08e",
+        "project_id": "test_upload_ws_02",
+        "filename": "test_uds_session.txt",
+        "file_type": "TEXT/MD",
+        "file_size_bytes": 174,
+        "file_hash_sha256": "eb8262dc58cda08e335825ac72680be3b80c2f207d0aa76e6163c6b61b87ef36",
+        "total_pages": 1,
+        "total_chunks": 1,
+        "ingested_at": "2026-10-05T02:38:50.175733+00:00",
+        "authorization_status": "AUTHORIZED_FOR_PILOT",
+        "metadata": {
+          "doc_type": "STANDARD_SPEC"
+        }
+      }
+    }
+  },
+  "test_invalid_ws": {
+    "project_id": "test_invalid_ws",
+    "name": "Invalid File Test",
+    "description": "",
+    "oem_name": "Generic OEM",
+    "ecu_model": "Generic ECU",
+    "created_at": "2026-10-05T02:14:50.457328+00:00",
+    "documents": {}
+  },
+  "test_phase2_api_ws": {
+    "project_id": "test_phase2_api_ws",
+    "name": "Phase 2 Test Workspace",
+    "description": "Integration testing for test generation & rule verification",
+    "oem_name": "Tata Motors",
+    "ecu_model": "BCM_GEN3",
+    "created_at": "2026-10-05T02:14:55.690177+00:00",
+    "documents": {}
+  },
+  "test_phase3_api_ws": {
+    "project_id": "test_phase3_api_ws",
+    "name": "Phase 3 Test Workspace",
+    "description": "Integration testing for simulated ECU & execution runner",
+    "oem_name": "Tata Motors",
+    "ecu_model": "BCM_GEN3",
+    "created_at": "2026-10-05T02:14:56.325455+00:00",
+    "documents": {}
+  },
+  "test_phase4_api_ws": {
+    "project_id": "test_phase4_api_ws",
+    "name": "Phase 4 Test Workspace",
+    "description": "Integration testing for script export & test optimization",
+    "oem_name": "Tata Motors",
+    "ecu_model": "BCM_GEN3",
+    "created_at": "2026-10-05T02:14:56.805229+00:00",
+    "documents": {}
+  },
+  "test_phase5_api_ws": {
+    "project_id": "test_phase5_api_ws",
+    "name": "Phase 5 API Workspace",
+    "description": "Testing Phase 5 Lineage and Metrics APIs",
+    "oem_name": "Tata Technologies",
+    "ecu_model": "BCM_EV",
+    "created_at": "2026-10-05T02:14:57.113618+00:00",
+    "documents": {}
+  }
+}
