@@ -17,12 +17,15 @@ root_dir = Path(__file__).resolve().parent.parent.parent
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
 
+from typing import Optional
 import streamlit as st
 
+from src.core.chunking import ContextAwareChunker
 from src.core.config import config
+from src.core.ingestion import DocumentIngestionEngine, IngestionError
 from src.core.llm_interface import LLMClientFactory
 from src.core.vector_store import IsolatedVectorStore
-from src.core.workspace_manager import workspace_manager
+from src.core.workspace_manager import WorkspaceManager, workspace_manager
 from src.web.components.header import render_global_header
 from src.web.pages.admin_activity import render_admin_activity_page
 from src.web.pages.documents import render_documents_page
@@ -34,6 +37,69 @@ from src.web.pages.overview import render_overview_page
 from src.web.pages.test_studio import render_test_studio_page
 from src.web.pages.traceability import render_traceability_page
 from src.web.styles.theme import inject_custom_theme
+
+
+def bootstrap_default_workspace(
+    vstore: Optional[IsolatedVectorStore] = None,
+    ws_manager: Optional[WorkspaceManager] = None,
+    spec_path: Optional[Path] = None,
+) -> bool:
+    """
+    Idempotently bootstraps the bundled synthetic UDS specification into the
+    default 'tata_uds_pilot' workspace when no ChromaDB chunks are indexed.
+    """
+    default_project_id = "tata_uds_pilot"
+    try:
+        store = vstore or IsolatedVectorStore()
+        if store.count_chunks(default_project_id) > 0:
+            return False
+
+        target_spec = spec_path or (config.data_dir / "sample_specs" / "synthetic_uds_spec.txt")
+        if not target_spec.exists():
+            return False
+
+        spec_text = target_spec.read_text(encoding="utf-8").replace("\r\n", "\n")
+        ingestion_engine = DocumentIngestionEngine()
+        ingested_doc = ingestion_engine.ingest_text(
+            text=spec_text,
+            filename=target_spec.name,
+            project_id=default_project_id
+        )
+
+        chunker = ContextAwareChunker()
+        chunks = chunker.chunk_document(ingested_doc)
+        if not chunks:
+            return False
+
+        store.add_chunks(project_id=default_project_id, chunks=chunks)
+
+        manager = ws_manager or workspace_manager
+        ws = manager.get_workspace(default_project_id)
+        existing_doc = ws.documents.get(ingested_doc.doc_id) if ws else None
+        doc_record = {
+            "doc_id": ingested_doc.doc_id,
+            "project_id": default_project_id,
+            "filename": ingested_doc.filename,
+            "file_type": ingested_doc.file_type,
+            "file_size_bytes": ingested_doc.file_size_bytes,
+            "file_hash_sha256": ingested_doc.file_hash_sha256,
+            "total_pages": ingested_doc.total_pages,
+            "total_chunks": len(chunks),
+            "ingested_at": (
+                existing_doc.get("ingested_at", ingested_doc.ingested_at)
+                if existing_doc
+                else ingested_doc.ingested_at
+            ),
+            "authorization_status": ingested_doc.authorization_status
+        }
+        if existing_doc and "metadata" in existing_doc:
+            doc_record["metadata"] = existing_doc["metadata"]
+        manager.record_document(project_id=default_project_id, doc_metadata=doc_record)
+        return True
+    except (IngestionError, Exception) as exc:
+        st.sidebar.warning(f"Bootstrap warning: {str(exc)}")
+        return False
+
 
 # ==========================================================
 # PAGE CONFIGURATION & THEME
@@ -48,7 +114,7 @@ st.set_page_config(
 inject_custom_theme()
 
 # ==========================================================
-# SESSION STATE INITIALIZATION
+# SESSION STATE INITIALIZATION & CLOUD KNOWLEDGE BOOTSTRAP
 # ==========================================================
 if "session_id" not in st.session_state:
     st.session_state.session_id = f"sess_{uuid.uuid4().hex[:12]}"
@@ -56,6 +122,8 @@ if "user_id" not in st.session_state:
     st.session_state.user_id = None
 if "admin_authenticated" not in st.session_state:
     st.session_state.admin_authenticated = False
+
+bootstrap_default_workspace()
 
 # ==========================================================
 # SIDEBAR: PRODUCT BRANDING & ACTIVE WORKSPACE
