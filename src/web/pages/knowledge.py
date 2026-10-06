@@ -5,7 +5,7 @@ Provides cited diagnostic Q&A workspace grounded in project specifications.
 
 import streamlit as st
 from src.core.activity_store import ActivityAction, activity_store
-from src.core.llm_interface import LLMClientFactory
+from src.core.llm_interface import GENERAL_KNOWLEDGE_MODE_LABEL, LLMClientFactory
 from src.core.vector_store import IsolatedVectorStore
 
 
@@ -52,12 +52,14 @@ def render_knowledge_page(active_ws):
         else:
             with st.spinner("Retrieving diagnostic evidence from vector index and synthesizing response..."):
                 try:
-                    citations = vector_store.query(
+                    raw_citations = vector_store.query(
                         project_id=active_ws.project_id,
                         query_text=user_query,
                         top_k=top_k
                     )
-                    qa_result = llm_client.generate_answer(query=user_query, citations=citations)
+                    qa_result = llm_client.generate_answer(query=user_query, citations=raw_citations)
+                    citations = getattr(qa_result, "citations", raw_citations)
+                    qa_mode = getattr(qa_result, "qa_mode", "GROUNDED_DIAGNOSTIC")
 
                     # Log activity with exact user query text
                     activity_store.log_activity(
@@ -72,6 +74,7 @@ def render_knowledge_page(active_ws):
                         duration_ms=getattr(qa_result, "inference_latency_ms", 0.0),
                         metadata={
                             "citations_count": len(citations),
+                            "qa_mode": qa_mode,
                             "model": getattr(qa_result, "model_identifier", "mock"),
                             "is_mock": getattr(qa_result, "is_mock_fallback", True)
                         }
@@ -80,10 +83,17 @@ def render_knowledge_page(active_ws):
                     st.markdown("---")
                     st.markdown("#### 📋 Specification Synthesis & Evidence Answer")
 
-                    if getattr(qa_result, "is_mock_fallback", True):
-                        st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Local Ollama offline. Response synthesized deterministically from authorized citations.")
+                    if qa_mode == "GENERAL_KNOWLEDGE":
+                        st.info(f"🌐 **{GENERAL_KNOWLEDGE_MODE_LABEL}**")
+                        if getattr(qa_result, "is_mock_fallback", True):
+                            st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Local Ollama offline. Open-ended general knowledge generation requires an active Ollama runtime (`OLLAMA_HOST`).")
+                        else:
+                            st.success(f"🟢 **Runtime Engine:** `Local Ollama LLM ({qa_result.model_identifier})` — Latency: {qa_result.inference_latency_ms:.1f}ms | General Knowledge Mode (ungrounded).")
                     else:
-                        st.success(f"🟢 **Runtime Engine:** `Local Ollama LLM ({qa_result.model_identifier})` — Latency: {qa_result.inference_latency_ms:.1f}ms | Air-gapped on-premise execution.")
+                        if getattr(qa_result, "is_mock_fallback", True):
+                            st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Local Ollama offline. Response synthesized deterministically from authorized citations.")
+                        else:
+                            st.success(f"🟢 **Runtime Engine:** `Local Ollama LLM ({qa_result.model_identifier})` — Latency: {qa_result.inference_latency_ms:.1f}ms | Air-gapped on-premise execution.")
 
                     st.markdown(
                         f"""
@@ -99,7 +109,9 @@ def render_knowledge_page(active_ws):
 
                     st.markdown("---")
                     st.markdown("#### 📚 Verified Source Citations & Provenance")
-                    if not citations:
+                    if qa_mode == "GENERAL_KNOWLEDGE":
+                        st.info(f"{GENERAL_KNOWLEDGE_MODE_LABEL} No diagnostic citations are attached to general knowledge responses.")
+                    elif not citations:
                         st.info("No matching specifications found in this workspace. Upload diagnostic specifications in the Documents page.")
                     else:
                         for idx, c in enumerate(citations, start=1):
