@@ -29,6 +29,26 @@ This platform combines:
 
 ---
 
+## 🚀 Live Demo
+
+The deployed application is available here:
+
+**Live Demo:** https://tata-uds-diagnostic-intelligence.streamlit.app/
+
+The live deployment demonstrates the implemented UDS diagnostic engineering workflow, including:
+
+- Knowledge Q&A with diagnostic evidence and citations
+- Rule-verified UDS test generation
+- Positive and negative diagnostic test cases
+- Human-in-the-loop engineering approval
+- Simulated ECU test execution
+- CAN request/response validation
+- Execution history and immutable audit records
+- ISO 14229 service and diagnostic coverage analysis
+- Approved-test export and optimization
+
+---
+
 ## 2. Key Capabilities
 
 * **Deterministic ISO 14229 Enforcement:** Full validation for 15 services:
