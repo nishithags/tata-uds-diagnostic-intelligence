@@ -5,7 +5,12 @@ Provides cited diagnostic Q&A workspace grounded in project specifications.
 
 import streamlit as st
 from src.core.activity_store import ActivityAction, activity_store
-from src.core.llm_interface import GENERAL_KNOWLEDGE_MODE_LABEL, LLMClientFactory
+from src.core.llm_interface import (
+    DOMAIN_KNOWLEDGE_MODE_LABEL,
+    GROUNDED_DIAGNOSTIC_MODE_LABEL,
+    LLMClientFactory,
+    OUT_OF_SCOPE_MODE_LABEL,
+)
 from src.core.vector_store import IsolatedVectorStore
 
 
@@ -83,13 +88,16 @@ def render_knowledge_page(active_ws):
                     st.markdown("---")
                     st.markdown("#### 📋 Specification Synthesis & Evidence Answer")
 
-                    if qa_mode == "GENERAL_KNOWLEDGE":
-                        st.info(f"🌐 **{GENERAL_KNOWLEDGE_MODE_LABEL}**")
+                    if qa_mode == "OUT_OF_SCOPE":
+                        st.warning(f"🚫 **{OUT_OF_SCOPE_MODE_LABEL}**")
+                    elif qa_mode == "DOMAIN_KNOWLEDGE":
+                        st.info(f"🧭 **{DOMAIN_KNOWLEDGE_MODE_LABEL}**")
                         if getattr(qa_result, "is_mock_fallback", True):
-                            st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Local Ollama offline. Open-ended general knowledge generation requires an active Ollama runtime (`OLLAMA_HOST`).")
+                            st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Ollama runtime offline. Connect an approved Ollama endpoint (`OLLAMA_HOST`) for ungrounded UDS domain synthesis.")
                         else:
-                            st.success(f"🟢 **Runtime Engine:** `Local Ollama LLM ({qa_result.model_identifier})` — Latency: {qa_result.inference_latency_ms:.1f}ms | General Knowledge Mode (ungrounded).")
+                            st.success(f"🟢 **Runtime Engine:** `Local Ollama LLM ({qa_result.model_identifier})` — Latency: {qa_result.inference_latency_ms:.1f}ms | UDS Domain Knowledge Mode (`DOMAIN_KNOWLEDGE`).")
                     else:
+                        st.info(f"📘 **{GROUNDED_DIAGNOSTIC_MODE_LABEL}**")
                         if getattr(qa_result, "is_mock_fallback", True):
                             st.warning("🟡 **Runtime Engine:** `Deterministic Fallback Mock` — Local Ollama offline. Response synthesized deterministically from authorized citations.")
                         else:
@@ -109,8 +117,10 @@ def render_knowledge_page(active_ws):
 
                     st.markdown("---")
                     st.markdown("#### 📚 Verified Source Citations & Provenance")
-                    if qa_mode == "GENERAL_KNOWLEDGE":
-                        st.info(f"{GENERAL_KNOWLEDGE_MODE_LABEL} No diagnostic citations are attached to general knowledge responses.")
+                    if qa_mode == "OUT_OF_SCOPE":
+                        st.info(f"{OUT_OF_SCOPE_MODE_LABEL} No citations generated.")
+                    elif qa_mode == "DOMAIN_KNOWLEDGE":
+                        st.info(f"{DOMAIN_KNOWLEDGE_MODE_LABEL} No project specification citations are attached to domain-knowledge responses.")
                     elif not citations:
                         st.info("No matching specifications found in this workspace. Upload diagnostic specifications in the Documents page.")
                     else:
